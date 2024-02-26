@@ -1,9 +1,9 @@
 package banking;
 
-import javax.swing.text.html.ListView;
-
 public final class util {
-    /*static boolean isValidCardNumber() {
-
-    }*/
+    public static int check(String ignoredAccountNumber) {
+        // for now just returns 5 because best number
+        // later stage, implement check digit method
+        return 5;
+    }
 }
