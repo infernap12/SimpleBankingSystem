@@ -1,10 +1,26 @@
 package banking;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 public class Main {
+    static Logger mylogger = Logger.getLogger(Main.class.getSimpleName());
+
+    static {
+        mylogger.setUseParentHandlers(false);
+        FileHandler fh;
+        try {
+            fh = new FileHandler("test.log", true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        mylogger.addHandler(fh);
+    }
+
     static HashMap<String, Account> fakeDb = new HashMap<>();
 
     public static void main(String[] args) {
@@ -20,12 +36,15 @@ public class Main {
                 case 1 -> {
                     Account account = createAccount();
                     fakeDb.put(account.cardNumber, account);
-                    System.out.printf("""                      
-                            %nYour card has been created
+                    System.out.printf("""
+
+                            Your card has been created
                             Your card number:
                             %s
                             Your card PIN:
-                            %s%n%n""", account.cardNumber, account.pinCode);
+                            %s
+
+                            """, account.cardNumber, account.pinCode);
                 }
                 case 2 -> {
                     Account account = getLogin();
@@ -91,7 +110,10 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             pinCode.append(random.nextInt(10));
         }
-        cardNumber.append(util.check(cardNumber.toString()));
+        mylogger.info(cardNumber.toString());
+        cardNumber.append(util.luhnDigit(cardNumber.toString()));
+        mylogger.info(cardNumber.toString());
+//        System.out.println(util.isValidCard(cardNumber.toString()));
         return new Account(cardNumber.toString(), pinCode.toString(), 0);
     }
 
