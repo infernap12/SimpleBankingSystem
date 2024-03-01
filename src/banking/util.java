@@ -22,12 +22,11 @@ public final class util {
         return (10 - (sum % 10)) % 10;
     }
 
-    @SuppressWarnings("unused")
     public static boolean isValidCard(String cardNumber) {
-        int sum = 0;
-        for (char ch : cardNumber.toCharArray()) {
-            sum += Integer.parseInt(String.valueOf(ch));
-        }
-        return sum % 10 == 0;
+        int ld = luhnDigit(cardNumber);
+        int lastDigit = Integer.parseInt(cardNumber.substring(cardNumber.length() - 1));
+        return lastDigit == ld;
     }
+
 }
+
